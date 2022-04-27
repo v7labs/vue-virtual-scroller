@@ -780,7 +780,6 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
     }
     return script;
 }
-//# sourceMappingURL=normalize-component.mjs.map
 
 /* script */
 const __vue_script__ = script;
