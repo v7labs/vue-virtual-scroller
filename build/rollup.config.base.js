@@ -25,6 +25,7 @@ export default {
       style: {
         postcssPlugins: [autoprefixer],
       },
+      needMap: false,
     }),
     css({
       output: styles => {
