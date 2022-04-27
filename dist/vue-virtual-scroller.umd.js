@@ -660,6 +660,10 @@
       ObserveVisibility: ObserveVisibility
     },
     props: _objectSpread2({}, props, {
+      useRelativePositioning: {
+        type: Boolean,
+        default: false
+      },
       itemSize: {
         type: Number,
         default: null
@@ -785,6 +789,38 @@
       this.removeListeners();
     },
     methods: {
+      viewPosition: function viewPosition(view) {
+        var isVertical = this.direction === 'vertical';
+        var verticalAxis;
+
+        if (isVertical) {
+          if (this.useRelativePositioning) {
+            verticalAxis = 'top';
+          } else {
+            verticalAxis = 'Y';
+          }
+        } else {
+          if (this.useRelativePositioning) {
+            verticalAxis = 'left';
+          } else {
+            verticalAxis = 'X';
+          }
+        }
+
+        if (this.ready) {
+          if (this.useRelativePositioning) {
+            var _ref;
+
+            return _ref = {}, _defineProperty(_ref, verticalAxis, view.position + 'px'), _defineProperty(_ref, 'will-change', 'unset'), _ref;
+          } else {
+            return {
+              transform: "translate".concat(verticalAxis, "(").concat(view.position, "px)")
+            };
+          }
+        }
+
+        return null;
+      },
       addView: function addView(pool, index, item, key, type) {
         var view = {
           item: item,
@@ -1306,20 +1342,13 @@
               _obj$1)
           },
           _vm._l(_vm.pool, function(view) {
-            var _obj;
             return _c(
               "div",
               {
                 key: view.nr.id,
                 staticClass: "vue-recycle-scroller__item-view",
                 class: { hover: _vm.hoverKey === view.nr.key },
-                style: _vm.ready
-                  ? ((_obj = {}),
-                    (_obj[_vm.direction === "vertical" ? "top" : "left"] =
-                      view.position + "px"),
-                    (_obj.willChange = "unset"),
-                    _obj)
-                  : null,
+                style: _vm.viewPosition(view),
                 on: {
                   mouseenter: function($event) {
                     _vm.hoverKey = view.nr.key;
