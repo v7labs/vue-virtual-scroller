@@ -26,7 +26,7 @@
       <div
         v-for="view of pool"
         :key="view.nr.id"
-        :style="ready ? {[direction === 'vertical' ? 'top' : 'left'] : `${view.position}px`, willChange : 'unset'} : null"
+        :style="viewPosition(view)"
         class="vue-recycle-scroller__item-view"
         :class="{ hover: hoverKey === view.nr.key }"
         @mouseenter="hoverKey = view.nr.key"
@@ -76,6 +76,11 @@ export default {
 
   props: {
     ...props,
+
+    useRelativePositioning: {
+      type: Boolean,
+      default: false,
+    },
 
     itemSize: {
       type: Number,
@@ -206,6 +211,40 @@ export default {
   },
 
   methods: {
+    viewPosition (view) {
+      const isVertical = this.direction === 'vertical'
+      let verticalAxis
+
+      if (isVertical) {
+        if (this.useRelativePositioning) {
+          verticalAxis = 'top'
+        } else {
+          verticalAxis = 'Y'
+        }
+      } else {
+        if (this.useRelativePositioning) {
+          verticalAxis = 'left'
+        } else {
+          verticalAxis = 'X'
+        }
+      }
+
+      if (this.ready) {
+        if (this.useRelativePositioning) {
+          return {
+            [verticalAxis]: view.position + 'px',
+            'will-change': 'unset',
+          }
+        } else {
+          return {
+            transform: `translate${verticalAxis}(${view.position}px)`,
+          }
+        }
+      }
+
+      return null
+    },
+
     addView (pool, index, item, key, type) {
       const view = {
         item,
