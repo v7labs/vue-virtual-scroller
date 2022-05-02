@@ -990,6 +990,10 @@ var script$1 = {
     minItemSize: {
       type: [Number, String],
       required: true
+    },
+    useRelativePositioning: {
+      type: Boolean,
+      default: false
     }
   }),
   data: function data() {
@@ -1150,6 +1154,7 @@ var __vue_render__$1 = function() {
             items: _vm.itemsWithSize,
             "min-item-size": _vm.minItemSize,
             direction: _vm.direction,
+            "use-relative-positioning": _vm.useRelativePositioning,
             "key-field": "id"
           },
           on: { resize: _vm.onScrollerResize, visible: _vm.onScrollerVisible },

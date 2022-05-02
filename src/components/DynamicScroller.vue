@@ -4,6 +4,7 @@
     :items="itemsWithSize"
     :min-item-size="minItemSize"
     :direction="direction"
+    :use-relative-positioning="useRelativePositioning"
     key-field="id"
     v-bind="$attrs"
     @resize="onScrollerResize"
@@ -74,6 +75,11 @@ export default {
     minItemSize: {
       type: [Number, String],
       required: true,
+    },
+
+    useRelativePositioning: {
+      type: Boolean,
+      default: false,
     },
   },
 
