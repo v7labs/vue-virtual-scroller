@@ -956,27 +956,33 @@ var script$1 = {
   provide: function provide() {
     if (typeof ResizeObserver !== 'undefined') {
       this.$_resizeObserver = new ResizeObserver(function (entries) {
-        var _iterator = _createForOfIteratorHelper(entries),
-            _step;
-
-        try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var entry = _step.value;
-
-            if (entry.target) {
-              var event = new CustomEvent('resize', {
-                detail: {
-                  contentRect: entry.contentRect
-                }
-              });
-              entry.target.dispatchEvent(event);
-            }
+        requestAnimationFrame(function () {
+          if (!Array.isArray(entries)) {
+            return;
           }
-        } catch (err) {
-          _iterator.e(err);
-        } finally {
-          _iterator.f();
-        }
+
+          var _iterator = _createForOfIteratorHelper(entries),
+              _step;
+
+          try {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
+              var entry = _step.value;
+
+              if (entry.target) {
+                var event = new CustomEvent('resize', {
+                  detail: {
+                    contentRect: entry.contentRect
+                  }
+                });
+                entry.target.dispatchEvent(event);
+              }
+            }
+          } catch (err) {
+            _iterator.e(err);
+          } finally {
+            _iterator.f();
+          }
+        });
       });
     }
 
